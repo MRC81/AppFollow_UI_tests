@@ -12,8 +12,8 @@ Here is an example of one test case for the Registration process on the [AppFoll
 * Allure 2.13
 
 ## How to run
-###Pre-requisites:
-*to run the project you will need Java 11 or higher. The Maven is not necessary since the project utilized a Maven wrapper. Make sure you have a proper java version in the JAVA_HOME path otherwise Maven most likely fails to run the project.*
+#### Pre-requisites:
+*you will need Java 11 or higher to run this project. The Maven is not necessary since the project utilized a Maven wrapper. Make sure you have a proper java version in the JAVA_HOME path otherwise Maven most likely fails to run the project.*
 
 To run the project just execute the following in command-line from the project's root folder:
 for Unix-like systems
