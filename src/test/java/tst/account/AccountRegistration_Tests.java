@@ -53,6 +53,11 @@ public class AccountRegistration_Tests extends SetUp{
             "Data provider and verifies that 'Please enter your work email.' error message will be shown, the error " +
             "message has a proper look and will disappear within 15 sec.")
     public void testEmailInvalidValues(String invalidEmailValue) {
+        // close the consent banner if it present otherwise it covers 'Create an Account' button
+        while ($("#adroll_consent_banner").isDisplayed()) {
+            $("#adroll_allow_all").shouldBe(visible).click();
+        }
+
         // click on 'Sign up'
         $(".header-signup").shouldBe(visible).click();
 
