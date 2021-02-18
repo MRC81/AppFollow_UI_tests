@@ -1,6 +1,7 @@
 package tst.account;
 
 
+import com.codeborne.selenide.testng.annotations.Report;
 import io.qameta.allure.Description;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.testng.annotations.DataProvider;
@@ -13,7 +14,7 @@ import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.executeJavaScript;
 
-
+@Report
 public class AccountRegistration_Tests extends SetUp{
 
     @DataProvider(name = "invalidEmails")

@@ -4,17 +4,17 @@ import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.WebDriverRunner;
 import com.codeborne.selenide.logevents.SelenideLogger;
+import com.codeborne.selenide.testng.TextReport;
 import io.qameta.allure.selenide.AllureSelenide;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
-import tst.logging.CustomReport;
 
 import static com.codeborne.selenide.WebDriverRunner.clearBrowserCache;
 import static java.lang.System.setProperty;
 
 
-@Listeners(CustomReport.class)
+@Listeners({TextReport.class})
 public class SetUp {
 
     // Get 'browser' value from the POM file
@@ -80,7 +80,9 @@ public class SetUp {
 
         setProperty("java.util.logging.SimpleFormatter.format", "%1$tT %4$s %5$s%6$s%n");
 
-        SelenideLogger.addListener("AllureSelenide", new AllureSelenide().screenshots(true));
+        SelenideLogger.addListener("AllureSelenide", new AllureSelenide()
+                .screenshots(true)
+                .savePageSource(false));
 
         Selenide.open(host);
     }
