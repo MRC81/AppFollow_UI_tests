@@ -13,6 +13,7 @@ import java.time.Duration;
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.executeJavaScript;
+import static io.qameta.allure.Allure.step;
 
 @Report
 public class AccountRegistration_Tests extends SetUp{
@@ -54,37 +55,44 @@ public class AccountRegistration_Tests extends SetUp{
             "Data provider and verifies that 'Please enter your work email.' error message will be shown, the error " +
             "message has a proper look and will disappear within 15 sec.")
     public void testEmailInvalidValues(String invalidEmailValue) {
-        // close the consent banner if it present otherwise it covers 'Create an Account' button
-        while ($("#adroll_consent_banner").isDisplayed()) {
-            $("#adroll_allow_all").shouldBe(visible).click();
-        }
 
-        // click on 'Sign up'
-        $(".header-signup").shouldBe(visible).click();
+        step("Close the Cookies notification bar if it appears", () -> {
+            while ($("#adroll_consent_banner").isDisplayed()) {
+                $("#adroll_allow_all").shouldBe(visible).click();
+            }
+        });
+        step("Click on the 'Sign up'", () ->
+                $(".header-signup").shouldBe(visible).click()
+        );
+        step("Enter a valid email for the new user", () ->
+            $("#signup-payed-email").shouldBe(visible).val(invalidEmailValue)
+        );
+        step("Enter user's first and last name", () ->
+            $("#signup-payed-full_name").shouldBe(visible).val("Vasili Pupkin")
+        );
+        step("Enter the company name", () ->
+            $("#signup-payed-company").shouldBe(visible).val("R&K")
+        );
+        step("Select the job title", () ->
+                $("#signup-payed-position").shouldBe(visible).selectOption("CEO")
+        );
+        step("Click on 'Create an Account'", () ->
+                $("#payed-signup-button").shouldBe(visible).click()
+        );
 
-        // enter a valid email for the new user
-        $("#signup-payed-email").shouldBe(visible).val(invalidEmailValue);
-        // enter user's first and last name
-        $("#signup-payed-full_name").shouldBe(visible).val("Vasili Pupkin");
-        // enter a company name
-        $("#signup-payed-company").shouldBe(visible).val("R&K");
-        // select a job title
-        $("#signup-payed-position").shouldBe(visible).selectOption("CEO");
-        // click on 'Create an Account'
-        $("#payed-signup-button").shouldBe(visible).click();
+        step("Verify that the proper error message appears, it has red text, pink background, " +
+                "and it will disappear after ~15 sec", () -> {
+            $("#signup-payed-error")
+                    .shouldBe(visible)
+                    .shouldHave(
+                            text("Please enter your work email."),
+                            cssValue("background-color", "rgba(255, 225, 224, 1)"),
+                            cssValue("color", "rgba(221, 44, 0, 1)")
+                    ).should(disappear, Duration.ofSeconds(15));
 
-        // verify that the proper error message appears, it has red text and pink background,
-        // and it will disappear after ~15 sec
-        $("#signup-payed-error")
-                .shouldBe(visible)
-                .shouldHave(
-                        text("Please enter your work email."),
-                        cssValue("background-color", "rgba(255, 225, 224, 1)"),
-                        cssValue("color", "rgba(221, 44, 0, 1)")
-                ).should(disappear, Duration.ofSeconds(15));
-
-        // execute this JS code to start over
-        executeJavaScript("$('.signup-payed__popup--scrollable').hide();");
+            // execute this JS code to start over
+            executeJavaScript("$('.signup-payed__popup--scrollable').hide();");
+        });
     }
 
 
